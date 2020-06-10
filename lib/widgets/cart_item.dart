@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_complete_guide/providers/cart.dart';
 import 'package:provider/provider.dart';
-
-import '../providers/cart.dart';
 
 class CartItem extends StatelessWidget {
   final String id;
@@ -11,12 +10,12 @@ class CartItem extends StatelessWidget {
   final String title;
 
   CartItem(
-    this.id,
-    this.productId,
-    this.price,
-    this.quantity,
-    this.title,
-  );
+      this.id,
+      this.productId,
+      this.price,
+      this.quantity,
+      this.title,
+      );
 
   @override
   Widget build(BuildContext context) {
@@ -37,9 +36,27 @@ class CartItem extends StatelessWidget {
         ),
       ),
       direction: DismissDirection.endToStart,
-      onDismissed: (direction) {
-        Provider.of<Cart>(context, listen: false).removeItem(productId);
-      },
+      confirmDismiss: (direction) => showDialog(
+          context: context, builder: (ctx) => AlertDialog(
+              title: Text('Are you sure?'),
+              actions: <Widget>[
+             FlatButton(
+                child: Text('No'),
+                onPressed: () {
+                  Navigator.of(ctx).pop(false);
+                },
+             ),
+             FlatButton(
+                child: Text('Yes'),
+                onPressed: () {
+                  Navigator.of(ctx).pop(true);
+                },
+          )
+        ],
+      )
+      ),
+      onDismissed: (direction) =>
+          Provider.of<Cart>(context, listen: false).removeItem(productId),
       child: Card(
         margin: EdgeInsets.symmetric(
           horizontal: 15,
@@ -51,14 +68,11 @@ class CartItem extends StatelessWidget {
             leading: CircleAvatar(
               child: Padding(
                 padding: EdgeInsets.all(5),
-                child: FittedBox(
-                  child: Text('\$$price'),
-                ),
-              ),
+                  child: FittedBox(child: Text('\$$price'))),
             ),
             title: Text(title),
             subtitle: Text('Total: \$${(price * quantity)}'),
-            trailing: Text('$quantity x'),
+            trailing: Text('$quantity'),
           ),
         ),
       ),
