@@ -17,9 +17,7 @@ class CustomRoute<T> extends MaterialPageRoute<T> {
     Animation<double> secondaryAnimation,
     Widget child,
   ) {
-    if (settings.isInitialRoute) {
-      return child;
-    }
+//
     return FadeTransition(
       opacity: animation,
       child: child,
@@ -36,10 +34,10 @@ class CustomPageTransitionBuilder extends PageTransitionsBuilder {
     Animation<double> secondaryAnimation,
     Widget child,
   ) {
-
-    if (route.settings.isInitialRoute = true) {
-      return child;
-    }
+//
+//    if (route.settings.isInitialRoute = true) {
+//      return child;
+//    }
     return FadeTransition(
       opacity: animation,
       child: child,
